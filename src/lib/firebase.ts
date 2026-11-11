@@ -1,4 +1,5 @@
 import { initializeApp, type FirebaseApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 import { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode, type GenerativeModel } from "firebase/ai";
 
 /**
@@ -31,6 +32,21 @@ function getApp() {
       messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID,
       appId: env.VITE_FIREBASE_APP_ID || "not-configured",
     });
+    // Firebase AI Logic requires App Check. In development (or for judges running locally)
+    // a debug token is used: set VITE_APPCHECK_DEBUG_TOKEN, or leave it empty and Firebase
+    // prints a fresh debug token in the console to register in the Firebase console.
+    if (cloudConfigured) {
+      if (env.DEV || env.VITE_APPCHECK_DEBUG_TOKEN) {
+        (self as unknown as { FIREBASE_APPCHECK_DEBUG_TOKEN: string | boolean }).FIREBASE_APPCHECK_DEBUG_TOKEN =
+          env.VITE_APPCHECK_DEBUG_TOKEN || true;
+      }
+      if (env.VITE_RECAPTCHA_ENTERPRISE_KEY || env.DEV || env.VITE_APPCHECK_DEBUG_TOKEN) {
+        initializeAppCheck(app, {
+          provider: new ReCaptchaEnterpriseProvider(env.VITE_RECAPTCHA_ENTERPRISE_KEY || "debug-only"),
+          isTokenAutoRefreshEnabled: true,
+        });
+      }
+    }
   }
   return app;
 }
@@ -41,7 +57,7 @@ const models = new Map<Posture, GenerativeModel>();
 export function modelFor(posture: Posture): GenerativeModel {
   let m = models.get(posture);
   if (!m) {
-    const ai = getAI(getApp(), { backend: new GoogleAIBackend() });
+    const ai = getAI(getApp(), { backend: new GoogleAIBackend(), useLimitedUseAppCheckTokens: false });
     m = getGenerativeModel(ai, {
       mode: POSTURES[posture].mode,
       inCloudParams: { model: CLOUD_MODEL, generationConfig: { temperature: 0.4 } },

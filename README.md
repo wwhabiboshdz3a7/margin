@@ -40,6 +40,7 @@ npm run dev                  # http://localhost:5191
 
 - **On-device:** Chrome 138+ with the built-in model (chrome://flags → *Prompt API for Gemini Nano* → enabled, then *Optimization Guide On Device Model* → enabled bypass). Margin reports the model's state in the panel.
 - **Cloud:** a Firebase project with **AI Logic** enabled on the Gemini Developer API; paste the web app config into `.env.local`.
+- **App Check** (required by Firebase AI Logic): production builds use reCAPTCHA Enterprise (`VITE_RECAPTCHA_ENTERPRISE_KEY`). Local runs use a debug token: set `VITE_APPCHECK_DEBUG_TOKEN`, or leave it empty, copy the token Firebase prints in the browser console, and register it under App Check → Apps → Manage debug tokens.
 
 Try it offline: turn off Wi-Fi, switch to Private, and keep working.
 
