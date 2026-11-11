@@ -19,7 +19,7 @@ export const POSTURES: Record<Posture, { mode: InferenceMode; title: string; blu
 const env = import.meta.env;
 
 export const cloudConfigured = Boolean(env.VITE_FIREBASE_API_KEY && env.VITE_FIREBASE_PROJECT_ID && env.VITE_FIREBASE_APP_ID);
-export const CLOUD_MODEL: string = env.VITE_CLOUD_MODEL || "gemini-2.5-flash";
+export const CLOUD_MODEL: string = env.VITE_CLOUD_MODEL || "gemini-3.5-flash";
 
 let app: FirebaseApp | null = null;
 function getApp() {

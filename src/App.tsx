@@ -108,6 +108,7 @@ export default function App() {
       setMargins((m) => [entry, ...m]);
       if (action.id === "title" && !active.title.trim()) update({ title: res.text.replace(/^["']|["']$/g, "") });
     } catch (e) {
+      console.error("[margin] inference failed", e);
       setError(friendlyError(e, posture));
     } finally {
       setBusy(null);
