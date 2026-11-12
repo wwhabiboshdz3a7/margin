@@ -1,6 +1,8 @@
 # Margin — notes with an AI in the margin
 
 > #BuildHybridAI 2026 entry by [wwhabiboshdz3a7](https://github.com/wwhabiboshdz3a7). A notebook where the AI runs on your device first, and only reaches for the cloud when it has to. Built on **Firebase AI Logic hybrid inference**.
+>
+> Try it: https://wwhabiboshdz3a7.github.io/margin/ (Chrome with the built-in model for on-device; cloud works everywhere)
 
 Most "AI notes" apps ship every keystroke to a server. Margin doesn't. The AI sits in the margin of the page, reads the note you're looking at, and answers on the laptop with Gemini Nano. When the device can't (no built-in model, a note too long, a weak machine), Firebase AI Logic routes the same request to Gemini in the cloud. Every answer is stamped with **where it ran** and **how long it took**, so the hybrid story isn't a claim, it's visible on every result.
 
